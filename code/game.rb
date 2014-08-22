@@ -1,10 +1,11 @@
 class FlappyNantoka < Game
   def setup
     @y = center_y
-    @x = center_x
+    @x = player_x
     @image = Image["images/meat.png"]
     @speed = default_speed
     @pipe = display.width
+    @score = 0
   end
 
   def update(elapsed)
@@ -28,10 +29,17 @@ class FlappyNantoka < Game
     position = V[@pipe, center_y]
     size = V[display.width / 10, center_y]
     display.fill_rectangle(position, size)
+
+    display.font_size = 54
+    display.fill_text(@score, V[center_x, 100])
   end
 
   def default_speed
     10
+  end
+
+  def player_x
+    display.width / 3
   end
 
   def center_x
@@ -44,7 +52,10 @@ class FlappyNantoka < Game
 
   def accelerate
     @pipe -= 5
-    @pipe = display.width if @pipe < 0
+    if @pipe < 0
+      @pipe = display.width
+      @score += 1
+    end
 
     @speed += 1
     @y += @speed * 0.1
@@ -67,5 +78,6 @@ class FlappyNantoka < Game
   def game_over
     @speed = default_speed
     @y = center_y
+    @score = 0
   end
 end
