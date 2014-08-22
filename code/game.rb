@@ -8,6 +8,9 @@ class FlappyNantoka < Game
   end
 
   def update(elapsed)
+    @paused = !@paused if keyboard.pressed?(:p)
+    return if @paused
+
     game_over if game_over?
 
     flap if pressed?
