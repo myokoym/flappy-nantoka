@@ -77,6 +77,7 @@ class FlappyNantoka < Game
 
   def game_over
     @speed = default_speed
+    @pipe = display.width
     @y = center_y
     @score = 0
   end
