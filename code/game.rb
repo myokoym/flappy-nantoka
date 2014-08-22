@@ -4,6 +4,7 @@ class FlappyNantoka < Game
     @x = center_x
     @image = Image["images/meat.png"]
     @speed = default_speed
+    @pipe = display.width
   end
 
   def update(elapsed)
@@ -12,11 +13,20 @@ class FlappyNantoka < Game
     flap if pressed?
     accelerate
 
-    display.clear
-    display.image(@image, V[@x, @y])
+    draw
   end
 
-  private
+  def draw
+    display.fill_color = C[0, 0, 0]
+    display.clear
+    display.image(@image, V[@x, @y])
+    display.fill_color = C[100, 100, 100]
+
+    position = V[@pipe, center_y]
+    size = V[display.width / 10, center_y]
+    display.fill_rectangle(position, size)
+  end
+
   def default_speed
     10
   end
@@ -30,6 +40,9 @@ class FlappyNantoka < Game
   end
 
   def accelerate
+    @pipe -= 5
+    @pipe = display.width if @pipe < 0
+
     @speed += 1
     @y += @speed * 0.1
   end
